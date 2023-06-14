@@ -10,7 +10,7 @@ export default {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      userName: {
+      username: {
         field: 'username',
         allowNull: false,
         type: DataTypes.STRING,

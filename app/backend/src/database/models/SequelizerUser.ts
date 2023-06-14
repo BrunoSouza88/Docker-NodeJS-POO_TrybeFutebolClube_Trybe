@@ -9,11 +9,16 @@ import db from '.';
 
 class SequelizeUser extends Model<
 InferAttributes<SequelizeUser>,
-InferCreationAttributes<SequelizeUser>> {
+InferCreationAttributes<SequelizeUser>
+> {
   id!: CreationOptional<number>;
+
   username!: CreationOptional<string>;
+
   role!: CreationOptional<string>;
+
   email!: CreationOptional<string>;
+
   password!: CreationOptional<string>;
 }
 
