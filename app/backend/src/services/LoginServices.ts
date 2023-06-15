@@ -19,8 +19,8 @@ export default class UserService {
       if (!bcrupt.compareSync(data.password, user.password)) {
         return { status: 'INVALID_DATA', data: { message: 'Invalid email or password' } };
       }
-      const { email } = user as IUser;
-      const token = this.jwt.sign({ email });
+      const { email, role } = user as IUser;
+      const token = this.jwt.sign({ email, role });
       return { status: 'SUCCESSFUL', data: { token } };
     }
     return { status: 'INVALID_DATA', data: { message: 'Invalid email or password' } };
