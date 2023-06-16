@@ -6,6 +6,9 @@ const matchesController = new MatchController();
 
 const router = Router();
 
+router.post('/', TokenValidation.validateToken, (req: Request, res: Response) =>
+  matchesController.createMatch(req, res));
+
 router.get('/', async (req: Request, res: Response) => {
   try {
     const { inProgress } = req.query;

@@ -8,4 +8,9 @@ export interface ICRUDModelWCheck {
   updateMatch(id: number, homeTeamGoals: number, awayTeamGoals: number): Promise<void>
 }
 
-export interface ICRUDMatchWModel<T> extends ICRUDModelWReader<T>, ICRUDModelWCheck {}
+export interface ICRUDMatchWCreate<T> {
+  create(data: Partial<T>): Promise<T>;
+}
+
+export interface ICRUDMatchWModel<T>
+  extends ICRUDModelWReader<T>, ICRUDMatchWCreate<T>, ICRUDModelWCheck {}

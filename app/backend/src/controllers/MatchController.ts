@@ -57,4 +57,15 @@ export default class MatchController {
 
     return res.status(200).json(ServiceResponse.data);
   }
+
+  public async createMatch(req: Request, res: Response) {
+    const newMatch = req.body;
+    const ServiceResponse = await this.matchService.createMatch(newMatch);
+
+    if (ServiceResponse.status !== 'SUCCESSFUL') {
+      return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
+    }
+
+    return res.status(201).json(ServiceResponse.data);
+  }
 }

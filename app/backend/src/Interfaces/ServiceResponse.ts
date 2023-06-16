@@ -22,7 +22,8 @@ export type ServiceResponseCreate<T> = {
   data: T
 };
 
-export type ServiceResponse<T> = ServiceResponseError |
+export type ServiceResponse<T> =
+ServiceResponseError |
 ServiceResponseSuccess<T> |
 ServiceResponseSameTeam |
 ServiceResponseCreate<T>;
