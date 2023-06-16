@@ -12,4 +12,17 @@ export type ServiceResponseSuccess<T> = {
   data: T
 };
 
-export type ServiceResponse<T> = ServiceResponseError | ServiceResponseSuccess<T>;
+export type ServiceResponseSameTeam = {
+  status: 'SAME_TEAMS',
+  data: ServiceMessage
+};
+
+export type ServiceResponseCreate<T> = {
+  status: 'CREATED',
+  data: T
+};
+
+export type ServiceResponse<T> = ServiceResponseError |
+ServiceResponseSuccess<T> |
+ServiceResponseSameTeam |
+ServiceResponseCreate<T>;

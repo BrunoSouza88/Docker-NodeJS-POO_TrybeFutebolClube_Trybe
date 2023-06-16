@@ -3,22 +3,19 @@ import SequelizeTeam from '../database/models/SequelizeTeam';
 import { ITeamModel } from '../Interfaces/Teams/ITeamModel';
 
 export default class TeamModel implements ITeamModel {
-  private model = SequelizeTeam;
+  private teamModel = SequelizeTeam;
 
   async findAll(): Promise<ITeam[]> {
-    const dbData = await this.model.findAll();
-    return dbData.map(({ id, teamName }) => (
+    const allTeams = await this.teamModel.findAll();
+    return allTeams.map(({ id, teamName }) => (
       { id, teamName }
     ));
   }
 
   async findById(idx: number): Promise<ITeam | null> {
-    const dbData = await this.model.findByPk(idx);
-    if (dbData == null) {
-      return null;
-    }
-
-    const { id, teamName }: ITeam = dbData;
+    const oneTeam = await this.teamModel.findByPk(idx);
+    if (!oneTeam) return null;
+    const { id, teamName }: ITeam = oneTeam;
     return { id, teamName };
   }
 }
