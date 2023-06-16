@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import MatchController from '../controllers/MatchController';
+import TokenValidation from '../middleware/Validations/TokenValidation';
 
 const matchesController = new MatchController();
 
@@ -19,6 +20,9 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(500).json({ status: 'ERROR', message: 'Internal server error' });
   }
 });
+
+router.patch('/:id/finish', TokenValidation.validateToken, (req: Request, res: Response) =>
+  matchesController.finishMatch(req, res));
 
 // router.get('/', (req: Request, res: Response) => matchesController.getAllMatches(req, res));
 

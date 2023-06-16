@@ -2,7 +2,6 @@ import SequelizeMatch from '../database/models/SequelizeMatch';
 import IMatch from '../Interfaces/Matchs/IMatch';
 import { IMatchModel } from '../Interfaces/Matchs/IMatchModel';
 import SequelizeTeam from '../database/models/SequelizeTeam';
-import { NewEntity } from '../Interfaces';
 
 export default class MatchModel implements IMatchModel {
   private matchModel = SequelizeMatch;
@@ -38,22 +37,7 @@ export default class MatchModel implements IMatchModel {
     return { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress };
   }
 
-  public async finishedMatch(id: IMatch['id']): Promise<void> {
+  async finishMath(id: number): Promise<void> {
     await this.matchModel.update({ inProgress: false }, { where: { id } });
-  }
-
-  public async updateMatch(
-    id: number,
-    awayTeamGoals: number,
-    homeTeamGoals: number,
-  ): Promise<void> {
-    await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
-  }
-
-  public async create(data: NewEntity<IMatch>): Promise<IMatch> {
-    const addMatch = await this.matchModel.create(data);
-    const { id, homeTeamId, awayTeamId, awayTeamGoals, homeTeamGoals, inProgress } = addMatch;
-
-    return { id, homeTeamGoals, homeTeamId, awayTeamGoals, awayTeamId, inProgress };
   }
 }
