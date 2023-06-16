@@ -43,4 +43,18 @@ export default class MatchController {
 
     return res.status(200).json(ServiceResponse.data);
   }
+
+  public async updateMatch(req: Request, res: Response) {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    const ServiceResponse = await this.matchService
+      .updateMatch(Number(id), homeTeamGoals, awayTeamGoals);
+
+    if (ServiceResponse.status !== 'SUCCESSFUL') {
+      return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
+    }
+
+    return res.status(200).json(ServiceResponse.data);
+  }
 }

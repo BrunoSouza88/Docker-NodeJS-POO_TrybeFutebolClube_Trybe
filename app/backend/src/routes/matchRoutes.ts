@@ -24,7 +24,8 @@ router.get('/', async (req: Request, res: Response) => {
 router.patch('/:id/finish', TokenValidation.validateToken, (req: Request, res: Response) =>
   matchesController.finishMatch(req, res));
 
-// router.get('/', (req: Request, res: Response) => matchesController.getAllMatches(req, res));
+router.patch('/:id', TokenValidation.validateToken, (req: Request, res: Response) =>
+  matchesController.updateMatch(req, res));
 
 router.get('/:id', (req: Request, res: Response) => matchesController.getMatchById(req, res));
 

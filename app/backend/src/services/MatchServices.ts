@@ -33,4 +33,13 @@ export default class MatchService {
     await this.matchModel.finishMath(id);
     return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
   }
+
+  public async updateMatch(
+    id: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<ServiceResponse<ServiceMessage>> {
+    await this.matchModel.updateMatch(id, homeTeamGoals, awayTeamGoals);
+    return { status: 'SUCCESSFUL', data: { message: 'Updated' } };
+  }
 }
