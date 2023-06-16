@@ -1,13 +1,19 @@
 import { Request, Response, Router } from 'express';
 import MatchController from '../controllers/MatchController';
 import TokenValidation from '../middleware/Validations/TokenValidation';
+import TeamsValidations from '../middleware/Validations/TeamsValidations';
 
 const matchesController = new MatchController();
 
 const router = Router();
 
-router.post('/', TokenValidation.validateToken, (req: Request, res: Response) =>
-  matchesController.createMatch(req, res));
+router.post(
+  '/',
+  TokenValidation.validateToken,
+  TeamsValidations.validateTeams,
+  (req: Request, res: Response) =>
+    matchesController.createMatch(req, res),
+);
 
 router.get('/', async (req: Request, res: Response) => {
   try {

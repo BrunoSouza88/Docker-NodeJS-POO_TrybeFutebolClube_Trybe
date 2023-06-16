@@ -41,7 +41,7 @@ export default class MatchController {
       return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
     }
 
-    return res.status(200).json(ServiceResponse.data);
+    return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
   }
 
   public async updateMatch(req: Request, res: Response) {
@@ -55,7 +55,7 @@ export default class MatchController {
       return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
     }
 
-    return res.status(200).json(ServiceResponse.data);
+    return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
   }
 
   public async createMatch(req: Request, res: Response) {
@@ -66,6 +66,6 @@ export default class MatchController {
       return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
     }
 
-    return res.status(201).json(ServiceResponse.data);
+    return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
   }
 }

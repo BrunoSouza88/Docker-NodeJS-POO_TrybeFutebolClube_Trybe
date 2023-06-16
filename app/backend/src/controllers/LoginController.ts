@@ -13,6 +13,6 @@ export default class LoginController {
     if (ServiceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
     }
-    return res.status(200).json(ServiceResponse.data);
+    return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
   }
 }
