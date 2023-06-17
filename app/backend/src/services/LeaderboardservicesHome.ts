@@ -14,8 +14,8 @@ export default class LeaderboardServiceHome {
   private goalsOwn = 0;
   private goalsBalanceTotal = 0;
   private allMatchesPrivate: matchDetailHome[] = [];
-  private totalPointsSum = 0;
   private sortedLeaderboard: responseType[] = [];
+  private totalPointsSum = 0;
 
   constructor(
     private teamModel: ITeamModel = new TeamModel(),
