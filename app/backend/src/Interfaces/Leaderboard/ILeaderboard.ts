@@ -5,6 +5,13 @@ export type matchDetail = {
   homeTeamGoals: number,
 };
 
+export type matchDetailAway = {
+  id: number,
+  awayTeamId: number,
+  awayTeamGoals: number,
+  homeTeamGoals: number,
+};
+
 export type responseType = {
   name: string,
   totalPoints: number,

@@ -5,7 +5,7 @@ import MatchModel from '../models/MatchModel';
 import { ITeamModel } from '../Interfaces/Teams/ITeamModel';
 import TeamModel from '../models/TeamModel';
 
-export default class LeaderboardService {
+export default class LeaderboardServiceHome {
   private totalPoints = 0;
   private totalVictories = 0;
   private totalDraws = 0;
@@ -130,7 +130,7 @@ export default class LeaderboardService {
     return Number(efficiency.toFixed(2));
   }
 
-  public async sortResponse(object: responseType[]) {
+  public async sortLeaderboard(object: responseType[]) {
     this.sortedResponse = object.sort((a, b) => {
       const victoryCount = b.totalVictories - a.totalVictories;
       if (victoryCount !== 0) {
@@ -167,7 +167,7 @@ export default class LeaderboardService {
       efficiency: await this.calculateEfficiency(el.id, allData),
     }));
 
-    const objectToReturn = await Promise.all(objectPromises);
-    return this.sortResponse(objectToReturn);
+    const leaderBoard = await Promise.all(objectPromises);
+    return this.sortLeaderboard(leaderBoard);
   }
 }
