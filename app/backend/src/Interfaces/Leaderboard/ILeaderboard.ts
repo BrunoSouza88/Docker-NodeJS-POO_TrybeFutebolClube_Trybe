@@ -1,13 +1,23 @@
-export type matchDetail = {
+export type matchDetailHome = {
   id: number,
   homeTeamId: number,
   awayTeamGoals: number,
   homeTeamGoals: number,
+  inProgress:boolean,
 };
 
 export type matchDetailAway = {
   id: number,
   awayTeamId: number,
+  awayTeamGoals: number,
+  homeTeamGoals: number,
+  inProgress:boolean,
+};
+
+export type matchDetail = {
+  id: number,
+  awayTeamId: number,
+  homeTeamId: number,
   awayTeamGoals: number,
   homeTeamGoals: number,
 };

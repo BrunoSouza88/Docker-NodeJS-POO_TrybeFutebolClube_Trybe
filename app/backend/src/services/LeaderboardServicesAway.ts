@@ -14,7 +14,7 @@ export default class LeaderboardServiceAway {
   private goalsBalanceTotal = 0;
   private allMatchesPrivate: matchDetailAway[] = [];
   private totalPointsSum = 0;
-  private sortedResponse: responseType[] = [];
+  private sortedLeaderboard: responseType[] = [];
 
   constructor(
     private teamModel: ITeamModel = new TeamModel(),
@@ -23,6 +23,8 @@ export default class LeaderboardServiceAway {
 
   private async calculateTotalPoints(awayTeamId: number, allMatchesData: matchDetailAway[]) {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
+
+    this.totalPoints = 0;
 
     allGames.forEach((match) => {
       if (match.awayTeamGoals > match.homeTeamGoals) {
@@ -36,14 +38,19 @@ export default class LeaderboardServiceAway {
   }
 
   private async calculateTotalGames(awayTeamId: number, allMatchesData: matchDetailAway[]) {
-    const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
+    const allMatches = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
 
-    this.allMatchesPrivate = allGames;
+    this.allMatchesPrivate = [];
+    if (allMatches.length > 0) {
+      this.allMatchesPrivate = allMatches;
+    }
     return this.allMatchesPrivate.length;
   }
 
   private async calculateTotalVictories(awayTeamId: number, allMatchesData: matchDetailAway[]) {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
+
+    this.totalVictories = 0;
 
     allGames.forEach((match) => {
       if (match.awayTeamGoals > match.homeTeamGoals) {
@@ -57,6 +64,8 @@ export default class LeaderboardServiceAway {
   private async calculateTotalDraws(awayTeamId: number, allMatchesData: matchDetailAway[]) {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
 
+    this.totalDraws = 0;
+
     allGames.forEach((match) => {
       if (match.awayTeamGoals === match.homeTeamGoals) {
         this.totalDraws += 1;
@@ -68,6 +77,8 @@ export default class LeaderboardServiceAway {
 
   private async calculateTotalLosses(awayTeamId: number, allMatchesData: matchDetailAway[]) {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
+
+    this.totalLosses = 0;
 
     allGames.forEach((match) => {
       if (match.awayTeamGoals < match.homeTeamGoals) {
@@ -81,6 +92,8 @@ export default class LeaderboardServiceAway {
   private async calculateGoalsFavor(awayTeamId: number, allMatchesData: matchDetailAway[]) {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
 
+    this.goalsFavor = 0;
+
     allGames.forEach((match) => {
       this.goalsFavor += match.awayTeamGoals;
     });
@@ -90,6 +103,8 @@ export default class LeaderboardServiceAway {
 
   private async calculateGoalsOwn(awayTeamId: number, allMatchesData: matchDetailAway[]) {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
+
+    this.goalsOwn = 0;
 
     allGames.forEach((match) => {
       this.goalsOwn += match.homeTeamGoals;
@@ -107,6 +122,8 @@ export default class LeaderboardServiceAway {
     const allGames = allMatchesData.filter((match) => match.awayTeamId === awayTeamId);
     const totalGames = allGames.length;
 
+    this.totalPointsSum = 0;
+
     allGames.forEach((match) => {
       if (match.awayTeamGoals > match.homeTeamGoals) {
         this.totalPointsSum += 3;
@@ -120,7 +137,7 @@ export default class LeaderboardServiceAway {
   }
 
   private async sortLeaderboard(object: responseType[]) {
-    this.sortedResponse = object.sort((a, b) => {
+    this.sortedLeaderboard = object.sort((a, b) => {
       const victoryCount = b.totalVictories - a.totalVictories;
       if (victoryCount !== 0) {
         return victoryCount;
@@ -135,20 +152,20 @@ export default class LeaderboardServiceAway {
       return goalsFavorCount;
     });
 
-    return this.sortedResponse;
+    return this.sortedLeaderboard;
   }
 
-  public async getAllTeams() {
+  private async getAllTeams() {
     const allTeams = await this.teamModel.findAll();
     return allTeams;
   }
 
-  public async getAllMatches() {
+  private async getAllMatches() {
     const allMatches = await this.matchModel.findAll();
     return allMatches;
   }
 
-  public async getAwayMatchesPoints() {
+  public async leaderboardResult() {
     const allTeams = await this.getAllTeams();
     const allMatches = await this.getAllMatches();
     const allData = allMatches.map((el) => el);
