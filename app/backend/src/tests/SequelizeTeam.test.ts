@@ -4,21 +4,18 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
 import SequelizeTeam from '../database/models/SequelizeTeam';
-import { Response } from 'superagent';
 import { allTeams, oneTeam } from './mocks/teamsMocks';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('GET /teams', () => {
  
-  let chaiHttpResponse: Response;
-  beforeEach(() => sinon.restore())
+  beforeEach(() => sinon.restore());
 
-  it('Seu sub-teste', async () => {
+  it('Deve retornar todas as equipes', async () => {
     sinon.stub(SequelizeTeam, 'findAll').resolves(allTeams as any);
 
     const { status, body } = await chai.request(app).get('/teams');
@@ -27,7 +24,7 @@ describe('Seu teste', () => {
     expect(body).to.be.equal(allTeams);
   });
 
-  it('', async () => {
+  it('Deve retornar uma equipe específica', async () => {
     sinon.stub(SequelizeTeam, 'findByPk').resolves(oneTeam as any);
 
     const { status, body } = await chai.request(app).get('/teams/1');
@@ -36,7 +33,7 @@ describe('Seu teste', () => {
     expect(body).to.be.equal(oneTeam);
   });
 
-  it('', async () => {
+  it('Deve retornar um erro ao buscar uma equipe inexistente', async () => {
     sinon.stub(SequelizeTeam, 'findByPk').resolves(null);
 
     const { status, body } = await chai.request(app).get('/teams/99');
