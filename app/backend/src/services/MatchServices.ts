@@ -10,8 +10,8 @@ export default class MatchService {
   ) {}
 
   public async getAll(): Promise<ServiceResponse<IMatch[]>> {
-    const AllMatches = await this.matchModel.findAll();
-    return { status: 'SUCCESSFUL', data: AllMatches };
+    const allMatches = await this.matchModel.findAll();
+    return { status: 'SUCCESSFUL', data: allMatches };
   }
 
   public async getById(id: number): Promise<ServiceResponse<IMatch>> {
