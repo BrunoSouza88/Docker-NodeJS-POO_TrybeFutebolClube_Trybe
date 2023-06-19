@@ -10,7 +10,7 @@ export default class LeaderboardServiceHome {
   private totalDraws = 0;
   private totalLosses = 0;
   private goalsFavor = 0;
-  private goalsOwn = 0;
+  private goalsTaken = 0;
   private goalsBalanceTotal = 0;
   private allMatchesPrivate: matchDetailHome[] = [];
   private totalPointsSum = 0;
@@ -110,18 +110,18 @@ export default class LeaderboardServiceHome {
     return this.goalsFavor;
   }
 
-  private calculateGoalsOwn(homeTeamId: number, allMatchesData: matchDetailHome[]) {
+  private calculateGoalsTaken(homeTeamId: number, allMatchesData: matchDetailHome[]) {
     const allMatches = allMatchesData.filter((el) => el.homeTeamId === homeTeamId);
 
-    this.goalsOwn = 0;
+    this.goalsTaken = 0;
 
     allMatches.forEach((el) => {
       if (!el.inProgress) {
-        this.goalsOwn += el.awayTeamGoals;
+        this.goalsTaken += el.awayTeamGoals;
       }
     });
 
-    return this.goalsOwn;
+    return this.goalsTaken;
   }
 
   private calculateGoalsBalance(goalsFavor: number, goalsOwn: number) {
@@ -153,8 +153,8 @@ export default class LeaderboardServiceHome {
       const pointsCount = b.totalPoints - a.totalPoints;
       if (pointsCount) return pointsCount;
 
-      const victoryCount = b.totalVictories - a.totalVictories;
-      if (victoryCount) return victoryCount;
+      const victoriesCount = b.totalVictories - a.totalVictories;
+      if (victoriesCount) return victoriesCount;
 
       const goalsBalanceCount = b.goalsBalance - a.goalsBalance;
       if (goalsBalanceCount) return goalsBalanceCount;
@@ -179,10 +179,10 @@ export default class LeaderboardServiceHome {
       totalDraws: this.calculateTotalDraws(el.id, await this.getAllMatches()),
       totalLosses: this.calculateTotalLosses(el.id, await this.getAllMatches()),
       goalsFavor: this.calculateGoalsFavor(el.id, await this.getAllMatches()),
-      goalsOwn: this.calculateGoalsOwn(el.id, await this.getAllMatches()),
+      goalsOwn: this.calculateGoalsTaken(el.id, await this.getAllMatches()),
       goalsBalance: this.calculateGoalsBalance(
         this.calculateGoalsFavor(el.id, await this.getAllMatches()),
-        this.calculateGoalsOwn(el.id, await this.getAllMatches()),
+        this.calculateGoalsTaken(el.id, await this.getAllMatches()),
       ),
       efficiency: this.calculateEfficiency(el.id, await this.getAllMatches()),
     }));
