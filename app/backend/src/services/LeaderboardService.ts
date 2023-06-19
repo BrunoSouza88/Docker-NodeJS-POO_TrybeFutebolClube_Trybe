@@ -33,7 +33,7 @@ export default class leaderBoardService {
 
   private calculateTotalPoints(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
 
     this.totalPoints = 0;
 
@@ -52,20 +52,21 @@ export default class leaderBoardService {
 
   private calculateTotalGames(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
+
     this.allMatchesPrivate = allMatches;
     return this.allMatchesPrivate.length;
   }
 
   private calculateTotalVictories(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId));
 
     this.totalVictories = 0;
 
     allMatches.forEach((el) => {
-      if ((el.awayTeamId === teamId && el.awayTeamGoals > el.homeTeamGoals)
-      || (el.homeTeamId === teamId && el.homeTeamGoals > el.awayTeamGoals)) {
+      if (((el.awayTeamId === teamId && el.awayTeamGoals > el.homeTeamGoals)
+      || (el.homeTeamId === teamId && el.homeTeamGoals > el.awayTeamGoals)) && !el.inProgress) {
         this.totalVictories += 1;
       }
     });
@@ -75,7 +76,7 @@ export default class leaderBoardService {
 
   private calculateTotalDraws(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
 
     this.totalDraws = 0;
 
@@ -91,7 +92,7 @@ export default class leaderBoardService {
 
   private calculateTotalLosses(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
 
     this.totalLosses = 0;
 
@@ -107,7 +108,7 @@ export default class leaderBoardService {
 
   private calculateGoalsFavor(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
 
     this.goalsFavor = 0;
 
@@ -124,7 +125,7 @@ export default class leaderBoardService {
 
   private calculateGoalsOwn(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
 
     this.goalsOwn = 0;
 
@@ -146,7 +147,7 @@ export default class leaderBoardService {
 
   private calculateEfficiency(teamId: number, allMatchesData: matchDetail[]) {
     const allMatches = allMatchesData
-      .filter((el) => el.awayTeamId === teamId || el.homeTeamId === teamId);
+      .filter((el) => (el.awayTeamId === teamId || el.homeTeamId === teamId) && !el.inProgress);
     const totalMatches = allMatches.length;
 
     this.totalPointsSum = 0;
@@ -168,21 +169,23 @@ export default class leaderBoardService {
 
   private sortLeaderboard(object: responseType[]) {
     this.sortedLeaderboard = object.sort((a, b) => {
-      const victoryCount = b.totalVictories - a.totalVictories;
-      if (victoryCount !== 0) {
-        return victoryCount;
-      }
+      const pointsCount = b.totalPoints - a.totalPoints;
+      if (pointsCount) return pointsCount;
 
-      const goalsCount = b.goalsFavor - a.goalsFavor;
-      if (goalsCount !== 0) {
-        return goalsCount;
-      }
+      const victoriesCount = b.totalVictories - a.totalVictories;
+      if (victoriesCount) return victoriesCount;
 
       const goalsBalanceCount = b.goalsBalance - a.goalsBalance;
-      return goalsBalanceCount;
+      if (goalsBalanceCount) return goalsBalanceCount;
+
+      const goalsCount = b.goalsFavor - a.goalsFavor;
+      return goalsCount;
     });
 
-    return this.sortedLeaderboard;
+    return this.sortedLeaderboard.map((item) => ({
+      ...item,
+      efficiency: item.efficiency.toFixed(2),
+    }));
   }
 
   public async leaderboardResult() {

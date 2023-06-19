@@ -20,6 +20,7 @@ export type matchDetail = {
   homeTeamId: number,
   awayTeamGoals: number,
   homeTeamGoals: number,
+  inProgress:boolean,
 };
 
 export type responseType = {
