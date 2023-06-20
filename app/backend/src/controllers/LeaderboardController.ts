@@ -22,7 +22,7 @@ export default class LeaderboardController {
     return res.status(200).json(result);
   }
 
-  public async showLeaderBoard(req: Request, res: Response) {
+  public async showLeaderBoard(_req: Request, res: Response) {
     const result = await this.leaderboardService.leaderboardResult();
 
     return res.status(200).json(result);
